@@ -13,6 +13,21 @@ const client = new pg.Client({
   ssl      : settings.ssl
 });
 
+function foundPeople(resultFromQuery) {
+  let firstName = '';
+  let lastName = '';
+  let dateOfBirth = '';
+  let count = 0;
+  console.log("Found", resultFromQuery.length, "person(s) by the name 'Paul':")
+  for (let person of resultFromQuery) {
+    firstName = person.first_name;
+    lastName = person.last_name;
+    dateOfBirth = String(person.birthdate);
+    count += 1;
+    console.log("-", count + ":", firstName, lastName + ", born", "'" + dateOfBirth.slice(4, 15) + "'");
+  }
+}
+
 client.connect((err) => {
   if (err) {
     return console.error("Connection Error", err);
@@ -27,17 +42,3 @@ client.connect((err) => {
   });
 });
 
-function foundPeople(resultFromQuery) {
-  let firstName = '';
-  let lastName = '';
-  let dateOfBirth = '';
-  let count = 0;
-  console.log("Found", resultFromQuery.length, "person(s) by the name 'Paul':")
-  for (let person of resultFromQuery) {
-    firstName = person.first_name;
-    lastName = person.last_name;
-    dateOfBirth = String(person.birthdate);
-    count += 1;
-    console.log("-", count, ":", firstName, lastName + ", born", "'" + dateOfBirth.slice(4, 15) + "'");
-  }
-}
